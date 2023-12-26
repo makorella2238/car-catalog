@@ -2,11 +2,12 @@ import React from 'react';
 import Image from "next/image";
 import Layout from "@/components/layout/Layout";
 import s  from './About.module.scss'
+import styles from '@/components/ui/genetal-css/general.module.scss'
 
 const AboutUsPage = () => {
     return (
         <Layout>
-            <div className={`${s.content} container mx-auto px-4 `}>
+            <div className={`${styles.fadeIn} container mx-auto px-4 `}>
                 <h1 className="text-4xl font-bold text-center my-8">О нас</h1>
                 <div className="flex flex-wrap justify-center">
                     <div className={s.teamEl}>

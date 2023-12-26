@@ -3,7 +3,8 @@
 import React, {useState} from 'react';
 import Layout from "@/components/layout/Layout";
 import s from './Contact.module.scss'
-import Preloader from "@/components/Preloader/Preloader";
+import styles from '@/components/ui/genetal-css/general.module.scss'
+
 
 const Contact = () => {
     const [name, setName] = useState('');
@@ -18,7 +19,7 @@ const Contact = () => {
 
     return (
         <Layout>
-            <div className='flex justify-center mt-10'>
+            <div className={`${styles.fadeIn} flex justify-center mt-10`}>
                 <div className="p-8 rounded shadow-md max-w-md container lg">
                     <h1 className="text-2xl font-bold mb-4 text-center text-slate-100 ">Свяжитесь с нами</h1>
                     <form onSubmit={ handleSubmit }>
