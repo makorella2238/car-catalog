@@ -5,17 +5,16 @@ import Modal from '@/components/ui/Modal/Modal';
 
 interface CarFilterProps {
     handleCancelFilters: () => void
-
-    onFilterChange(filters: { search: string; brand: string; price: number }): void;
+    setSearchText: React.Dispatch<React.SetStateAction<string>>
+    searchText: string
+    onFilterChange(filters: { brand: string; price: number }): void;
 }
 
-const CarFilter: React.FC<CarFilterProps> = ({onFilterChange, handleCancelFilters}) => {
+const CarFilter: React.FC<CarFilterProps> = ({onFilterChange, handleCancelFilters, setSearchText, searchText}) => {
     const inputRef = useRef(null);
-    const modalRef = useRef(null);
 
     const [isFiltrationModal, setIsFiltrationModal] = useState(false);
 
-    const [search, setSearch] = useState('');
     const [brand, setBrand] = useState('');
     const [price, setPrice] = useState(0);
     const [brands, setBrands] = useState<string[]>([]);
@@ -29,15 +28,10 @@ const CarFilter: React.FC<CarFilterProps> = ({onFilterChange, handleCancelFilter
     }, []);
 
     const handleSearchIconClick = () => {
-        handleFilterClick();
         if (inputRef.current) {
             // @ts-ignore
             inputRef.current.focus();
         }
-    };
-
-    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearch(event.target.value);
     };
 
     const handleBrandChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -49,19 +43,15 @@ const CarFilter: React.FC<CarFilterProps> = ({onFilterChange, handleCancelFilter
     };
 
     const handleFilterClick = () => {
-        onFilterChange({search, brand, price});
+        onFilterChange({brand, price});
         setIsFiltrationModal(false);
-    };
-
-    const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter') {
-            handleFilterClick();
-        }
     };
 
     const handleCancel = () => {
         setIsFiltrationModal(false)
         handleCancelFilters()
+        setBrand('')
+        setPrice(0)
     }
 
     return (
@@ -75,11 +65,10 @@ const CarFilter: React.FC<CarFilterProps> = ({onFilterChange, handleCancelFilter
                     <input
                         type="text"
                         placeholder="Search..."
-                        className="shadow-md w-full h-7 pl-9 rounded-2xl text-slate-500 shadow-current lg:shadow-xl"
-                        value={ search }
-                        onChange={ handleSearchChange }
-                        onKeyPress={ handleKeyPress }
                         ref={ inputRef }
+                        className="shadow-md w-full h-7 pl-9 rounded-2xl text-slate-500 shadow-current lg:shadow-xl"
+                        value={searchText}
+                        onChange={(e) => setSearchText(e.target.value)}
                     />
                     <Image
                         src="/search.svg"
@@ -105,7 +94,7 @@ const CarFilter: React.FC<CarFilterProps> = ({onFilterChange, handleCancelFilter
                         className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-gray-900 bg-opacity-75">
                         <div className="bg-black rounded-lg p-8 text-white relative">
                                 <h2 className={ `${ styles.gradientText } text-2xl font-bold mb-6` }>Filtration</h2>
-                                <button className='absolute top-2 right-2' onClick={handleCancel}><Image src='/x-mark.svg' alt='x' width={25} height={25}/> </button>
+                                <button className='absolute top-2 right-2' onClick={() => setIsFiltrationModal(false) }><Image src='/x-mark.svg' alt='x' width={25} height={25}/> </button>
                             <select
                                 value={ brand }
                                 onChange={ handleBrandChange }
